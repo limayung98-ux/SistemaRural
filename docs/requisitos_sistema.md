@@ -11,7 +11,7 @@
 7. Consultar y filtrar la agenda; cancelar una cita programada.
 8. Registrar una atención desde una cita y actualizar su estado.
 9. Registrar tabletas, cápsulas, alcohol medicinal y otros insumos con presentación, vencimiento y existencias. La interfaz no muestra códigos internos, lotes ni precios.
-10. Actualizar las existencias mediante ingresos y salidas, sin permitir stock negativo y sin solicitar un detalle libre del movimiento.
+10. Consultar el inventario de medicamentos e insumos con sus existencias, mínimo, vencimiento y estado, sin ventas ni movimientos desde la interfaz de exposición.
 11. Generar comprobantes de cita imprimibles y exportables, y reportes estadísticos agregados.
 
 ## Restricciones de diseño
@@ -26,6 +26,6 @@
 
 - Un paciente válido se registra y se muestra en la tabla con el DNI enmascarado; un DNI duplicado se rechaza.
 - Una cita válida se agrega inmediatamente a la agenda con fecha y hora legibles en formato AM/PM; se rechaza un cruce de horario del profesional.
-- Un movimiento de inventario actualiza el stock; el sistema bloquea una salida mayor a las existencias disponibles.
+- El módulo de medicamentos se limita a mostrar el inventario de demostración; no procesa ventas ni movimientos.
 - El comprobante se puede previsualizar, imprimir y exportar sin mostrar el DNI completo.
 - Las pruebas automatizadas finalizan sin fallos al ejecutar `mvn test`.

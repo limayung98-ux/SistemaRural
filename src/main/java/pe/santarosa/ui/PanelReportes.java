@@ -136,7 +136,6 @@ public class PanelReportes extends JPanel {
         texto.append("Nombre y apellidos : ").append(paciente.getNombres()).append('\n');
         texto.append("Documento          : ").append(paciente.getDocumentoEnmascarado()).append('\n');
         texto.append("Edad               : ").append(paciente.getEdad()).append(" años\n");
-        texto.append("Teléfono           : ").append(paciente.getTelefonoEnmascarado()).append('\n');
         texto.append("--------------------------------------------------------------------\n");
         texto.append("DETALLE DE LA CITA\n");
         texto.append("Profesional        : ").append(cita.getProfesional()).append('\n');
@@ -154,11 +153,10 @@ public class PanelReportes extends JPanel {
             texto.append("Fecha de atención  : ").append(atencion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append('\n');
         }
         texto.append("--------------------------------------------------------------------\n");
-        texto.append("Este documento acredita el registro de la cita en el sistema.\n");
-        texto.append("No constituye comprobante tributario ni receta médica.\n");
-        texto.append("Conserve este documento y proteja la información del paciente.\n");
+        texto.append("\n¡Gracias por confiar en nuestro equipo de salud!\n");
+        texto.append("Le deseamos bienestar y una pronta mejoría.\n");
+        texto.append("Su salud es nuestra mayor prioridad.\n");
         texto.append(separador).append('\n');
-        texto.append("                 Gracias por utilizar nuestro servicio\n");
         texto.append(separador).append('\n');
         return texto.toString();
     }

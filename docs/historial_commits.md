@@ -26,3 +26,5 @@ git log --oneline
 | 16 | `Agrega guía para publicar el proyecto en GitHub` | Explica cómo crear el repositorio remoto y subir la rama `main` conservando el historial. |
 
 **Importante:** los commits están guardados en el repositorio local del ZIP. Para que también aparezcan en GitHub, el proyecto debe conectarse al repositorio remoto correspondiente y ejecutar `git push`; esta copia no se ha publicado en GitHub.
+
+| 17 | `Simplifica pacientes inventario y comprobante para exposicion` | Elimina teléfono visible, panel de movimientos y texto formal del comprobante; actualiza capturas y documentación. |

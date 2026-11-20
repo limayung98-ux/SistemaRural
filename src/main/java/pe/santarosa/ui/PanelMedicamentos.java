@@ -1,7 +1,6 @@
 package pe.santarosa.ui;
 
 import pe.santarosa.model.Medicamento;
-import pe.santarosa.model.TipoMovimiento;
 import pe.santarosa.service.ServicioSalud;
 
 import javax.swing.*;
@@ -27,8 +26,6 @@ public class PanelMedicamentos extends JPanel {
     private final JTextField stock = EstilosUI.campo(6);
     private final JTextField minimo = EstilosUI.campo(6);
     private final JTextField vencimiento = EstilosUI.campo(10);
-    private final JComboBox<TipoMovimiento> tipo = new JComboBox<>(TipoMovimiento.values());
-    private final JTextField cantidad = EstilosUI.campo(6);
     // La primera columna conserva el identificador interno, pero no se muestra en pantalla.
     private final DefaultTableModel modelo = new DefaultTableModel(new Object[]{
             "ID interno", "Medicamento", "Presentación", "Stock actual", "Stock mínimo", "Vencimiento", "Estado"}, 0) {
@@ -79,17 +76,6 @@ public class PanelMedicamentos extends JPanel {
         lista.add(EstilosUI.scroll(tabla), BorderLayout.CENTER);
         add(lista, BorderLayout.CENTER);
 
-        JPanel ajustes = new JPanel(new FlowLayout(FlowLayout.LEFT, 9, 8));
-        ajustes.setBackground(EstilosUI.FONDO);
-        ajustes.setBorder(BorderFactory.createTitledBorder("Actualizar existencias del producto seleccionado"));
-        ajustes.add(new JLabel("Tipo:"));
-        ajustes.add(tipo);
-        ajustes.add(new JLabel("Cantidad:"));
-        ajustes.add(cantidad);
-        JButton aplicar = EstilosUI.boton("Aplicar ajuste");
-        aplicar.addActionListener(e -> ajustar());
-        ajustes.add(aplicar);
-        add(ajustes, BorderLayout.SOUTH);
         refrescar();
     }
 
@@ -107,29 +93,6 @@ public class PanelMedicamentos extends JPanel {
             EstilosUI.aviso(this, "El stock inicial y el mínimo deben ser números enteros.", true);
         } catch (DateTimeParseException ex) {
             EstilosUI.aviso(this, "Use el formato de vencimiento DD/MM/AAAA.", true);
-        } catch (IllegalArgumentException | IllegalStateException ex) {
-            EstilosUI.aviso(this, ex.getMessage(), true);
-        }
-    }
-
-    private void ajustar() {
-        int fila = tabla.getSelectedRow();
-        if (fila < 0) {
-            EstilosUI.aviso(this, "Seleccione un medicamento de la tabla.", true);
-            return;
-        }
-        try {
-            int filaModelo = tabla.convertRowIndexToModel(fila);
-            String idInterno = String.valueOf(modelo.getValueAt(filaModelo, 0));
-            Medicamento medicamento = servicio.obtenerMedicamento(idInterno);
-            servicio.ajustarInventario(medicamento.getId(), (TipoMovimiento) tipo.getSelectedItem(),
-                    Integer.parseInt(cantidad.getText().trim()));
-            cantidad.setText("");
-            refrescar();
-            alCambiar.run();
-            EstilosUI.aviso(this, "Las existencias se actualizaron correctamente.", false);
-        } catch (NumberFormatException ex) {
-            EstilosUI.aviso(this, "La cantidad debe ser un número entero.", true);
         } catch (IllegalArgumentException | IllegalStateException ex) {
             EstilosUI.aviso(this, ex.getMessage(), true);
         }

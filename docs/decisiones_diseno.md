@@ -2,7 +2,7 @@
 
 ## Caso aplicado y alcance
 
-El prototipo representa un establecimiento de salud que necesita organizar registros de pacientes, citas, atenciones y existencias de medicamentos. La exposición utiliza únicamente nombres, documentos, teléfonos, citas e inventario ficticios. La interfaz de escritorio divide el trabajo en pestañas, mantiene los formularios visibles y presenta la agenda y los reportes en tablas o comprobantes legibles. El alcance es académico y local; no reemplaza una historia clínica institucional.
+El prototipo representa un establecimiento de salud que necesita organizar registros de pacientes, citas, atenciones y existencias de medicamentos. La exposición utiliza únicamente nombres, documentos, citas e inventario ficticios. El formulario visible de pacientes no solicita teléfono. La interfaz de escritorio divide el trabajo en pestañas, mantiene los formularios visibles y presenta la agenda y los reportes en tablas o comprobantes legibles. El alcance es académico y local; no reemplaza una historia clínica institucional.
 
 ## Paradigmas de programación
 

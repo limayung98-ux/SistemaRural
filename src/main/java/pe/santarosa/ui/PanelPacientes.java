@@ -17,10 +17,9 @@ public class PanelPacientes extends JPanel {
     private final JTextField nombres = EstilosUI.campo(23);
     private final JTextField dni = EstilosUI.campo(9);
     private final JTextField edad = EstilosUI.campo(4);
-    private final JTextField telefono = EstilosUI.campo(11);
     private final JTextField buscar = EstilosUI.campo(22);
     private final DefaultTableModel modelo = new DefaultTableModel(
-            new Object[]{"Nombre y apellidos", "Documento", "Edad", "Teléfono"}, 0) {
+            new Object[]{"Nombre y apellidos", "Documento", "Edad"}, 0) {
         @Override public boolean isCellEditable(int fila, int columna) { return false; }
     };
     private final JTable tabla = new JTable(modelo);
@@ -45,8 +44,6 @@ public class PanelPacientes extends JPanel {
         formulario.add(dni);
         formulario.add(new JLabel("Edad:"));
         formulario.add(edad);
-        formulario.add(new JLabel("Teléfono:"));
-        formulario.add(telefono);
         JButton registrar = EstilosUI.boton("Registrar paciente");
         registrar.addActionListener(e -> registrar());
         formulario.add(registrar);
@@ -74,11 +71,11 @@ public class PanelPacientes extends JPanel {
     private void registrar() {
         try {
             int anios = Integer.parseInt(edad.getText().trim());
-            servicio.registrarPaciente(nombres.getText(), anios, dni.getText().trim(), telefono.getText().trim());
+            servicio.registrarPaciente(nombres.getText(), anios, dni.getText().trim(), "");
             limpiarFormulario();
             refrescar();
             alCambiar.run();
-            EstilosUI.aviso(this, "Paciente registrado correctamente. El DNI se conserva protegido y se muestra parcialmente oculto.", false);
+            EstilosUI.aviso(this, "Paciente registrado", false);
         } catch (NumberFormatException ex) {
             EstilosUI.aviso(this, "La edad debe ser un número entero.", true);
         } catch (IllegalArgumentException | IllegalStateException ex) {
@@ -90,7 +87,6 @@ public class PanelPacientes extends JPanel {
         nombres.setText("");
         dni.setText("");
         edad.setText("");
-        telefono.setText("");
         nombres.requestFocusInWindow();
     }
 
@@ -98,7 +94,7 @@ public class PanelPacientes extends JPanel {
         modelo.setRowCount(0);
         for (Paciente paciente : servicio.buscarPacientes(buscar.getText())) {
             modelo.addRow(new Object[]{paciente.getNombres(), paciente.getDocumentoEnmascarado(),
-                    paciente.getEdad(), paciente.getTelefonoEnmascarado()});
+                    paciente.getEdad()});
         }
     }
 }
