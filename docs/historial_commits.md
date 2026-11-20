@@ -1,6 +1,6 @@
 # Historial de commits del proyecto
 
-El repositorio Git local incluido en el ZIP conserva **15 commits** con mensajes descriptivos en español. Para revisarlos, abrir una terminal en la carpeta del proyecto y ejecutar:
+El repositorio Git local incluido en el ZIP conserva **16 commits** con mensajes descriptivos en español. Para revisarlos, abrir una terminal en la carpeta del proyecto y ejecutar:
 
 ```bash
 git log --oneline
@@ -23,5 +23,6 @@ git log --oneline
 | 13 | `Actualiza README y adjunta capturas de los módulos` | Instrucciones generales y capturas verificables de las cuatro pestañas. |
 | 14 | `Registra el historial de commits descriptivos del proyecto` | Este documento y la relación de los cambios versionados. |
 | 15 | `Simplifica inventario y elimina campos no usados en exposición` | Quita de la interfaz el código visible, lote, precio y detalle del movimiento; actualiza persistencia, datos ficticios y capturas. |
+| 16 | `Agrega guía para publicar el proyecto en GitHub` | Explica cómo crear el repositorio remoto y subir la rama `main` conservando el historial. |
 
 **Importante:** los commits están guardados en el repositorio local del ZIP. Para que también aparezcan en GitHub, el proyecto debe conectarse al repositorio remoto correspondiente y ejecutar `git push`; esta copia no se ha publicado en GitHub.

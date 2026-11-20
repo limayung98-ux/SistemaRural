@@ -48,7 +48,7 @@ Ejecutar `mvn test` y comprobar el resultado `BUILD SUCCESS`. La salida de esa e
 
 Se aplican los patrones **Singleton** (`ConfiguracionAplicacion`) y **Factory** (`FabricaRegistros`). `ServicioSalud` depende de la abstracción `RepositorioSalud`, lo que desacopla las reglas de negocio de la persistencia.
 
-La documentación de apoyo está en `docs/`: requisitos, decisiones de diseño, diagrama de clases, guía de pruebas, inventario demostrativo e historial de commits. Las capturas de demostración de los cuatro módulos se encuentran en `docs/captura_pacientes_santa_rosa.png`, `docs/captura_citas_santa_rosa.png`, `docs/captura_medicamentos_santa_rosa.png` y `docs/captura_reportes_santa_rosa.png`.
+La documentación de apoyo está en `docs/`: requisitos, decisiones de diseño, diagrama de clases, guía de pruebas, inventario demostrativo, historial de commits y pasos para publicar el repositorio en GitHub. Las capturas de demostración de los cuatro módulos se encuentran en `docs/captura_pacientes_santa_rosa.png`, `docs/captura_citas_santa_rosa.png`, `docs/captura_medicamentos_santa_rosa.png` y `docs/captura_reportes_santa_rosa.png`.
 
 ## Persistencia y protección de información
 
