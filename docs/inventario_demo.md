@@ -1,6 +1,6 @@
-# Inventario demostrativo para exposición
+# Inventario ficticio para exposición
 
-El primer inicio del sistema carga automáticamente productos de muestra cuando el inventario está vacío. Las existencias son ficticias y sirven para mostrar la tabla, las alertas y los movimientos.
+Al iniciar por primera vez, el sistema agrega productos de muestra si el inventario está vacío. Los nombres y cantidades son ficticios y permiten mostrar la tabla, los estados de existencias y los controles de actualización.
 
 | Medicamento o insumo | Presentación | Stock inicial | Mínimo |
 |---|---|---:|---:|
@@ -11,4 +11,6 @@ El primer inicio del sistema carga automáticamente productos de muestra cuando 
 | Sales de rehidratación oral | Sobre | 32 | 12 |
 | Alcohol medicinal 70% | Frasco 250 ml | 24 | 8 |
 
-Los productos y cantidades son datos ficticios. El módulo registra existencias y movimientos; no constituye un módulo de prescripción médica ni recomienda tratamientos.
+La interfaz de exposición no solicita lote, precio ni detalle de movimiento. Para los ajustes de existencias solo se elige tipo (ingreso o salida) y cantidad. Los productos no constituyen una lista de prescripción ni recomendación de tratamientos.
+
+En una instalación sin registros de pacientes también se crea un paciente y una cita sintéticos para que la agenda y los reportes puedan demostrarse desde el primer inicio.

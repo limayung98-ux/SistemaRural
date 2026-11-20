@@ -2,14 +2,14 @@
 
 ## Caso aplicado y alcance
 
-El prototipo representa un establecimiento de salud que necesita organizar registros de pacientes, citas, atenciones y existencias de medicamentos. La interfaz de escritorio divide el trabajo en pestañas, mantiene los formularios visibles y presenta la agenda y los reportes en tablas o comprobantes legibles. El alcance es académico y local; no reemplaza una historia clínica institucional.
+El prototipo representa un establecimiento de salud que necesita organizar registros de pacientes, citas, atenciones y existencias de medicamentos. La exposición utiliza únicamente nombres, documentos, teléfonos, citas e inventario ficticios. La interfaz de escritorio divide el trabajo en pestañas, mantiene los formularios visibles y presenta la agenda y los reportes en tablas o comprobantes legibles. El alcance es académico y local; no reemplaza una historia clínica institucional.
 
 ## Paradigmas de programación
 
 | Paradigma | Ventajas | Desventajas | Aplicación concreta |
 |---|---|---|---|
 | Orientado a objetos | Encapsula atributos y reglas, y permite separar responsabilidades. | Requiere diseñar clases y relaciones. | Entidades `Paciente`, `Cita`, `Medicamento` y `Atencion`; servicio y repositorio. |
-| Funcional | Simplifica filtros, transformaciones y resúmenes de colecciones. | No reemplaza validaciones ni cambios de estado. | `filter` para búsquedas y alertas; `map` y `reduce` para el valor de inventario y conteos. |
+| Funcional | Simplifica filtros, transformaciones y resúmenes de colecciones. | No reemplaza validaciones ni cambios de estado. | `filter` para búsquedas y alertas; `map` y `reduce` para contar citas por estado. |
 | Orientado a eventos | Responde de forma inmediata a las acciones de la interfaz. | Los listeners pueden acoplarse si concentran reglas de negocio. | Eventos de Swing para registrar, buscar, cancelar, atender y actualizar tablas. |
 | Estructurado / imperativo | Facilita seguir validaciones y secuencias de persistencia. | Puede producir métodos largos si se usa sin modularidad. | Conversión de fechas, manejo de errores y lectura/escritura cifrada. |
 

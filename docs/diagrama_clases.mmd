@@ -36,10 +36,8 @@ classDiagram
       -String id
       -String nombre
       -String presentacion
-      -String lote
       -int stock
       -int minimo
-      -BigDecimal precioUnitario
       -LocalDate fechaVencimiento
       +ingresar(int) void
       +entregar(int) void
@@ -57,7 +55,6 @@ classDiagram
       -String medicamentoId
       -TipoMovimiento tipo
       -int cantidad
-      -String detalle
       -LocalDateTime fecha
     }
     class DatosSistema {

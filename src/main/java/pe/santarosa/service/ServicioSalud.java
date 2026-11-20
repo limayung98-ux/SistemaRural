@@ -7,14 +7,12 @@ import pe.santarosa.repository.RepositorioSalud;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /** Casos de uso del sistema. Mantiene las reglas fuera de la interfaz gráfica. */
 public class ServicioSalud {
@@ -52,21 +50,21 @@ public class ServicioSalud {
         finally { spec.clearPassword(); }
     }
 
-    public Medicamento registrarMedicamento(String nombre, String presentacion, String lote, int stock,
-                                             int minimo, BigDecimal precio, LocalDate vencimiento) {
+    public Medicamento registrarMedicamento(String nombre, String presentacion, int stock,
+                                             int minimo, LocalDate vencimiento) {
         boolean duplicado = datos.getMedicamentos().stream().anyMatch(m -> m.getNombre().equalsIgnoreCase(nombre)
-                && m.getPresentacion().equalsIgnoreCase(presentacion) && m.getLote().equalsIgnoreCase(lote));
-        if (duplicado) throw new IllegalArgumentException("Ya existe ese medicamento con la misma presentación y lote.");
-        Medicamento medicamento = FabricaRegistros.crearMedicamento(nombre, presentacion, lote, stock, minimo, precio, vencimiento);
+                && m.getPresentacion().equalsIgnoreCase(presentacion));
+        if (duplicado) throw new IllegalArgumentException("Ese medicamento ya está registrado con la misma presentación.");
+        Medicamento medicamento = FabricaRegistros.crearMedicamento(nombre, presentacion, stock, minimo, vencimiento);
         datos.add(medicamento); persistir(); return medicamento;
     }
 
-    public void ajustarInventario(String medicamentoId, TipoMovimiento tipo, int cantidad, String detalle) {
+    public void ajustarInventario(String medicamentoId, TipoMovimiento tipo, int cantidad) {
         Medicamento medicamento = obtenerMedicamento(medicamentoId);
         if (tipo == TipoMovimiento.INGRESO) medicamento.ingresar(cantidad);
         else if (tipo == TipoMovimiento.SALIDA) medicamento.entregar(cantidad);
         else throw new IllegalArgumentException("Tipo de movimiento no reconocido.");
-        datos.add(FabricaRegistros.crearMovimiento(medicamentoId, tipo, cantidad, detalle));
+        datos.add(FabricaRegistros.crearMovimiento(medicamentoId, tipo, cantidad));
         persistir();
     }
 
@@ -126,12 +124,6 @@ public class ServicioSalud {
     public List<Medicamento> obtenerMedicamentosEnRiesgo() {
         return datos.getMedicamentos().stream().filter(m -> m.stockBajo() || m.vencido()).toList();
     }
-    /** map + reduce: cálculo del valor referencial total del inventario. */
-    public BigDecimal calcularValorInventario() {
-        return datos.getMedicamentos().stream()
-                .map(m -> m.getPrecioUnitario().multiply(BigDecimal.valueOf(m.getStock())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
     /** filter + map + reduce: conteo funcional de citas según estado. */
     public long contarCitas(EstadoCita estado) {
         return datos.getCitas().stream().filter(c -> c.getEstado() == estado).map(c -> 1L).reduce(0L, Long::sum);
@@ -139,7 +131,7 @@ public class ServicioSalud {
     public ReporteResumen generarResumen() {
         return new ReporteResumen(datos.getPacientes().size(), datos.getCitas().size(),
                 contarCitas(EstadoCita.PROGRAMADA), contarCitas(EstadoCita.ATENDIDA),
-                datos.getMedicamentos().size(), obtenerMedicamentosEnRiesgo().size(), calcularValorInventario());
+                datos.getMedicamentos().size(), obtenerMedicamentosEnRiesgo().size());
     }
 
     /** El reporte exportado contiene cifras agregadas; no incluye nombres ni documentos de pacientes. */
@@ -153,7 +145,6 @@ public class ServicioSalud {
                 + "Citas atendidas: " + r.citasAtendidas() + System.lineSeparator()
                 + "Medicamentos registrados: " + r.totalMedicamentos() + System.lineSeparator()
                 + "Medicamentos con stock bajo: " + r.medicamentosEnRiesgo() + System.lineSeparator()
-                + "Valor referencial del inventario: S/ " + r.valorInventario().toPlainString() + System.lineSeparator()
                 + System.lineSeparator() + "Nota: reporte agregado; no contiene datos identificativos de pacientes.";
     }
 
@@ -163,6 +154,5 @@ public class ServicioSalud {
     }
 
     public record ReporteResumen(int totalPacientes, int totalCitas, long citasProgramadas,
-                                 long citasAtendidas, int totalMedicamentos, int medicamentosEnRiesgo,
-                                 BigDecimal valorInventario) { }
+                                 long citasAtendidas, int totalMedicamentos, int medicamentosEnRiesgo) { }
 }

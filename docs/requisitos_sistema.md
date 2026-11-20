@@ -10,8 +10,8 @@
 6. Evitar que el mismo profesional tenga dos citas activas en la misma fecha y hora.
 7. Consultar y filtrar la agenda; cancelar una cita programada.
 8. Registrar una atención desde una cita y actualizar su estado.
-9. Registrar tabletas, cápsulas, alcohol medicinal y otros insumos con lote, vencimiento y existencias.
-10. Registrar movimientos de ingreso y salida, sin permitir stock negativo.
+9. Registrar tabletas, cápsulas, alcohol medicinal y otros insumos con presentación, vencimiento y existencias. La interfaz no muestra códigos internos, lotes ni precios.
+10. Actualizar las existencias mediante ingresos y salidas, sin permitir stock negativo y sin solicitar un detalle libre del movimiento.
 11. Generar comprobantes de cita imprimibles y exportables, y reportes estadísticos agregados.
 
 ## Restricciones de diseño
@@ -20,7 +20,7 @@
 - Mantener una aplicación de escritorio local, sin depender de servicios externos para su operación básica.
 - Organizar el código en capas y mantener las reglas de negocio fuera de los componentes gráficos.
 - Proteger el DNI mediante hash con salt y cifrar los registros locales; evitar exponer identificadores completos en reportes generales.
-- Utilizar únicamente datos ficticios en demostraciones académicas y respetar el alcance de la Ley N.° 29733.
+- Utilizar únicamente datos ficticios en la demostración académica y respetar el alcance de la Ley N.° 29733.
 
 ## Criterios de aceptación
 

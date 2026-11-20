@@ -2,7 +2,6 @@ package pe.santarosa.service;
 
 import org.junit.jupiter.api.Test;
 import pe.santarosa.model.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,15 +23,14 @@ class ServicioSaludTest {
                 () -> servicio.registrarCita(p.getId(), "Medicina general", fecha, LocalTime.of(9, 0), "Consulta"));
     }
 
-    @Test void impideSalidaMayorAlStockYCalculaValorConStreams() {
+    @Test void impideSalidaMayorAlStockYActualizaExistencias() {
         ServicioSalud servicio = new ServicioSalud(new RepositorioMemoria());
-        Medicamento m = servicio.registrarMedicamento("Paracetamol", "Tableta", "L-01", 10, 2,
-                new BigDecimal("0.50"), LocalDate.now().plusMonths(10));
-        servicio.ajustarInventario(m.getId(), TipoMovimiento.SALIDA, 3, "Uso de demostración");
+        Medicamento m = servicio.registrarMedicamento("Paracetamol", "Tableta 500 mg", 10, 2,
+                LocalDate.now().plusMonths(10));
+        servicio.ajustarInventario(m.getId(), TipoMovimiento.SALIDA, 3);
         assertEquals(7, servicio.obtenerMedicamento(m.getId()).getStock());
         assertThrows(IllegalArgumentException.class,
-                () -> servicio.ajustarInventario(m.getId(), TipoMovimiento.SALIDA, 20, "Prueba de stock"));
-        assertEquals(new BigDecimal("3.50"), servicio.calcularValorInventario());
+                () -> servicio.ajustarInventario(m.getId(), TipoMovimiento.SALIDA, 20));
     }
 
     @Test void reporteNoExponeElDocumentoCompleto() {
@@ -63,6 +61,16 @@ class ServicioSaludTest {
         assertEquals(1, servicio.buscarPacientes("Carlos").size());
         assertEquals(1, servicio.buscarPacientes("7788").size());
         assertTrue(servicio.buscarPacientes("no existe").isEmpty());
+    }
+
+
+    @Test void cuentaCitasProgramadasConOperacionesFuncionales() {
+        ServicioSalud servicio = new ServicioSalud(new RepositorioMemoria());
+        Paciente paciente = servicio.registrarPaciente("Paciente de Prueba", 27, "66778899", "900555666");
+        servicio.registrarCita(paciente.getId(), "Medicina general", LocalDate.now().plusDays(3),
+                LocalTime.of(11, 0), "Control general");
+        assertEquals(1L, servicio.contarCitas(EstadoCita.PROGRAMADA));
+        assertEquals(0L, servicio.contarCitas(EstadoCita.ATENDIDA));
     }
 
 }

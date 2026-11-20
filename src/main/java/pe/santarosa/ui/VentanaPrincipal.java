@@ -45,12 +45,6 @@ public class VentanaPrincipal extends JFrame {
         pestanas.setFont(new Font("SansSerif", Font.BOLD, 12));
         raiz.add(pestanas, BorderLayout.CENTER);
 
-        JLabel pie = new JLabel("Sistema de gestión local | Utilice únicamente datos ficticios para demostraciones académicas.");
-        pie.setFont(new Font("SansSerif", Font.PLAIN, 11));
-        pie.setForeground(new Color(90, 95, 100));
-        pie.setBorder(new EmptyBorder(3, 4, 0, 0));
-        raiz.add(pie, BorderLayout.SOUTH);
-
         setContentPane(raiz);
     }
 

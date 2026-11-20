@@ -18,7 +18,7 @@ import java.util.Set;
 
 /** Persistencia local cifrada con AES/GCM. Los registros no se guardan en texto plano. */
 public class RepositorioSaludCifrado implements RepositorioSalud {
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
     private static final int NONCE_BYTES = 12;
     private static final int TAG_BITS = 128;
     private final Path directorio;
@@ -114,8 +114,8 @@ public class RepositorioSaludCifrado implements RepositorioSalud {
             out.writeInt(datos.getMedicamentos().size());
             for (Medicamento m : datos.getMedicamentos()) {
                 out.writeUTF(m.getId()); out.writeUTF(m.getNombre()); out.writeUTF(m.getPresentacion());
-                out.writeUTF(m.getLote()); out.writeInt(m.getStock()); out.writeInt(m.getMinimo());
-                out.writeUTF(m.getPrecioUnitario().toPlainString()); out.writeUTF(m.getFechaVencimiento().toString());
+                out.writeInt(m.getStock()); out.writeInt(m.getMinimo());
+                out.writeUTF(m.getFechaVencimiento().toString());
             }
             out.writeInt(datos.getCitas().size());
             for (Cita c : datos.getCitas()) {
@@ -131,7 +131,7 @@ public class RepositorioSaludCifrado implements RepositorioSalud {
             out.writeInt(datos.getMovimientos().size());
             for (MovimientoInventario m : datos.getMovimientos()) {
                 out.writeUTF(m.getId()); out.writeUTF(m.getMedicamentoId()); out.writeUTF(m.getTipo().name());
-                out.writeInt(m.getCantidad()); out.writeUTF(m.getDetalle()); out.writeUTF(m.getFecha().toString());
+                out.writeInt(m.getCantidad()); out.writeUTF(m.getFecha().toString());
             }
         }
         return bytes.toByteArray();
@@ -141,15 +141,22 @@ public class RepositorioSaludCifrado implements RepositorioSalud {
         DatosSistema datos = new DatosSistema();
         try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes))) {
             int version = in.readInt();
-            if (version != VERSION) throw new IOException("La versión de los datos no es compatible.");
+            if (version != 1 && version != VERSION) throw new IOException("La versión de los datos no es compatible.");
             int totalPacientes = leerCantidad(in);
             for (int i = 0; i < totalPacientes; i++) {
                 datos.add(new Paciente(in.readUTF(), in.readUTF(), in.readInt(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF()));
             }
             int totalMedicamentos = leerCantidad(in);
             for (int i = 0; i < totalMedicamentos; i++) {
-                datos.add(new Medicamento(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readInt(), in.readInt(),
-                        new java.math.BigDecimal(in.readUTF()), LocalDate.parse(in.readUTF())));
+                String id = in.readUTF();
+                String nombre = in.readUTF();
+                String presentacion = in.readUTF();
+                if (version == 1) in.readUTF(); // Descarta lote del formato anterior.
+                int stock = in.readInt();
+                int minimo = in.readInt();
+                if (version == 1) in.readUTF(); // Descarta precio del formato anterior.
+                LocalDate vencimiento = LocalDate.parse(in.readUTF());
+                datos.add(new Medicamento(id, nombre, presentacion, stock, minimo, vencimiento));
             }
             int totalCitas = leerCantidad(in);
             for (int i = 0; i < totalCitas; i++) {
@@ -162,8 +169,13 @@ public class RepositorioSaludCifrado implements RepositorioSalud {
             }
             int totalMovimientos = leerCantidad(in);
             for (int i = 0; i < totalMovimientos; i++) {
-                datos.add(new MovimientoInventario(in.readUTF(), in.readUTF(), TipoMovimiento.valueOf(in.readUTF()),
-                        in.readInt(), in.readUTF(), LocalDateTime.parse(in.readUTF())));
+                String id = in.readUTF();
+                String medicamentoId = in.readUTF();
+                TipoMovimiento tipo = TipoMovimiento.valueOf(in.readUTF());
+                int cantidad = in.readInt();
+                if (version == 1) in.readUTF(); // Descarta el detalle del formato anterior.
+                LocalDateTime fecha = LocalDateTime.parse(in.readUTF());
+                datos.add(new MovimientoInventario(id, medicamentoId, tipo, cantidad, fecha));
             }
             if (in.available() != 0) throw new IOException("El archivo contiene datos adicionales no reconocidos.");
         } catch (RuntimeException ex) {

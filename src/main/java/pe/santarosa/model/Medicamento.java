@@ -1,31 +1,27 @@
 package pe.santarosa.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** Medicamento con control de existencias y vencimiento. */
+/** Medicamento o insumo con control de existencias y vencimiento. */
 public class Medicamento {
     private final String id;
     private String nombre;
     private String presentacion;
-    private String lote;
     private int stock;
     private int minimo;
-    private BigDecimal precioUnitario;
     private LocalDate fechaVencimiento;
 
-    public Medicamento(String id, String nombre, String presentacion, String lote,
-                       int stock, int minimo, BigDecimal precioUnitario, LocalDate fechaVencimiento) {
-        if (id == null || id.isBlank()) throw new IllegalArgumentException("El código del medicamento es obligatorio.");
+    public Medicamento(String id, String nombre, String presentacion,
+                       int stock, int minimo, LocalDate fechaVencimiento) {
+        if (id == null || id.isBlank()) throw new IllegalArgumentException("El identificador interno del medicamento es obligatorio.");
         this.id = id;
         setNombre(nombre);
         setPresentacion(presentacion);
-        setLote(lote);
         setStock(stock);
         setMinimo(minimo);
-        setPrecioUnitario(precioUnitario);
         setFechaVencimiento(fechaVencimiento);
     }
+
     public String getId() { return id; }
     public String getNombre() { return nombre; }
     public final void setNombre(String nombre) {
@@ -37,8 +33,6 @@ public class Medicamento {
         if (presentacion == null || presentacion.isBlank()) throw new IllegalArgumentException("La presentación es obligatoria.");
         this.presentacion = presentacion.trim();
     }
-    public String getLote() { return lote; }
-    public final void setLote(String lote) { this.lote = lote == null ? "Sin lote" : lote.trim(); }
     public int getStock() { return stock; }
     public final void setStock(int stock) {
         if (stock < 0) throw new IllegalArgumentException("El stock no puede ser negativo.");
@@ -48,11 +42,6 @@ public class Medicamento {
     public final void setMinimo(int minimo) {
         if (minimo < 0) throw new IllegalArgumentException("El stock mínimo no puede ser negativo.");
         this.minimo = minimo;
-    }
-    public BigDecimal getPrecioUnitario() { return precioUnitario; }
-    public final void setPrecioUnitario(BigDecimal precioUnitario) {
-        if (precioUnitario == null || precioUnitario.signum() < 0) throw new IllegalArgumentException("El precio no puede ser negativo.");
-        this.precioUnitario = precioUnitario;
     }
     public LocalDate getFechaVencimiento() { return fechaVencimiento; }
     public final void setFechaVencimiento(LocalDate fechaVencimiento) {

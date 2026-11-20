@@ -10,10 +10,10 @@ Prototipo académico de escritorio para organizar pacientes, citas, atenciones, 
 
 - **Pacientes:** registro de nombres y apellidos, DNI, edad y teléfono; búsqueda por nombre o documento enmascarado. En las tablas nunca se muestra el DNI completo.
 - **Citas:** selección del paciente y profesional, fecha, hora en formato AM/PM y motivo mediante una lista desplegable. La cita nueva aparece inmediatamente en la agenda. Se puede buscar, cancelar o registrar la atención.
-- **Medicamentos:** alta de productos e insumos, entre ellos tabletas, cápsulas y alcohol medicinal; control de lote, vencimiento, stock mínimo e ingresos/salidas.
+- **Medicamentos:** registro de tabletas, cápsulas y alcohol medicinal; la pantalla muestra presentación, existencias, stock mínimo, vencimiento y estado. Permite ajustar ingresos y salidas sin mostrar código, lote, precio ni detalle del movimiento.
 - **Reportes:** comprobante de cita con presentación similar a un recibo, opción de imprimir o exportar a TXT, y resumen estadístico sin nombres ni documentos de pacientes.
 
-El comprobante es constancia interna del registro de cita; no es una factura tributaria ni una receta médica. El inventario permite llevar existencias, pero no recomienda ni prescribe medicamentos.
+El comprobante es constancia interna del registro de cita; no es una factura tributaria ni una receta médica. El inventario permite llevar existencias, pero no recomienda ni prescribe medicamentos. Al iniciar por primera vez se cargan registros de demostración con nombres, documentos, teléfonos, citas y existencias ficticias.
 
 ## Abrir y ejecutar en Apache NetBeans
 
@@ -54,7 +54,7 @@ La documentación de apoyo está en `docs/`: requisitos, decisiones de diseño, 
 
 Los datos se guardan en el perfil del usuario, dentro de `.sistemarural-santa-rosa`, mediante cifrado AES-256-GCM. El DNI no se almacena en texto plano: se utiliza PBKDF2-HMAC-SHA256 con un salt aleatorio por paciente para las comparaciones y solo se muestra enmascarado. Los reportes estadísticos exportables contienen datos agregados.
 
-Estas medidas son controles demostrativos y no certifican por sí solas el cumplimiento integral de la Ley N.° 29733 ni convierten el prototipo en un sistema clínico de producción. La clave se almacena en el mismo perfil local; un despliegue real necesitaría gestión externa de claves, autenticación, roles, auditoría, respaldos cifrados y revisión institucional. Para las prácticas, utilizar únicamente datos ficticios.
+Estas medidas son controles demostrativos y no certifican por sí solas el cumplimiento integral de la Ley N.° 29733 ni convierten el prototipo en un sistema clínico de producción. La clave se almacena en el mismo perfil local; un despliegue real necesitaría gestión externa de claves, autenticación, roles, auditoría, respaldos cifrados y revisión institucional. Los datos precargados son ficticios y están destinados exclusivamente a la presentación académica.
 
 ## Licencia y alcance
 
