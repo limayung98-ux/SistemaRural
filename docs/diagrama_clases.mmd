@@ -1,0 +1,130 @@
+classDiagram
+    class Persona {
+      <<abstract>>
+      -String id
+      -String nombres
+      -int edad
+      +getId() String
+      +getNombres() String
+      +setNombres(String) void
+      +getEdad() int
+      +setEdad(int) void
+    }
+    class Paciente {
+      -String documentoHash
+      -String documentoSalt
+      -String ultimosCuatro
+      -String telefono
+      +getDocumentoEnmascarado() String
+      +getTelefonoEnmascarado() String
+    }
+    class ProfesionalSalud {
+      -String especialidad
+      +getEspecialidad() String
+    }
+    class Cita {
+      -String id
+      -String pacienteId
+      -String profesional
+      -LocalDate fecha
+      -LocalTime hora
+      -String motivo
+      -EstadoCita estado
+      +setEstado(EstadoCita) void
+    }
+    class Medicamento {
+      -String id
+      -String nombre
+      -String presentacion
+      -String lote
+      -int stock
+      -int minimo
+      -BigDecimal precioUnitario
+      -LocalDate fechaVencimiento
+      +ingresar(int) void
+      +entregar(int) void
+      +stockBajo() boolean
+    }
+    class Atencion {
+      -String id
+      -String citaId
+      -String profesional
+      -String observacion
+      -LocalDateTime fecha
+    }
+    class MovimientoInventario {
+      -String id
+      -String medicamentoId
+      -TipoMovimiento tipo
+      -int cantidad
+      -String detalle
+      -LocalDateTime fecha
+    }
+    class DatosSistema {
+      -List~Paciente~ pacientes
+      -List~Medicamento~ medicamentos
+      -List~Cita~ citas
+      -List~Atencion~ atenciones
+      -List~MovimientoInventario~ movimientos
+    }
+    class RepositorioSalud {
+      <<interface>>
+      +cargar() DatosSistema
+      +guardar(DatosSistema) void
+    }
+    class RepositorioSaludCifrado {
+      -Path archivoDatos
+      -Path archivoClave
+      +cargar() DatosSistema
+      +guardar(DatosSistema) void
+    }
+    class ServicioSalud {
+      -RepositorioSalud repositorio
+      -DatosSistema datos
+      +registrarPaciente(...) Paciente
+      +registrarCita(...) Cita
+      +registrarAtencion(...) Atencion
+      +ajustarInventario(...) void
+      +buscarPacientes(...) List~Paciente~
+      +generarResumen() ReporteResumen
+    }
+    class ConfiguracionAplicacion {
+      <<Singleton>>
+      -ConfiguracionAplicacion instancia
+      +getInstancia() ConfiguracionAplicacion
+    }
+    class FabricaRegistros {
+      <<Factory>>
+      +crearPaciente(...) Paciente
+      +crearCita(...) Cita
+      +crearMedicamento(...) Medicamento
+    }
+    class VentanaPrincipal
+    class PanelPacientes
+    class PanelCitas
+    class PanelMedicamentos
+    class PanelReportes
+
+    Persona <|-- Paciente
+    Persona <|-- ProfesionalSalud
+    DatosSistema *-- Paciente
+    DatosSistema *-- Medicamento
+    DatosSistema *-- Cita
+    DatosSistema *-- Atencion
+    DatosSistema *-- MovimientoInventario
+    RepositorioSalud <|.. RepositorioSaludCifrado
+    ServicioSalud --> RepositorioSalud : depende de abstracción
+    ServicioSalud --> DatosSistema
+    ServicioSalud ..> FabricaRegistros : crea entidades
+    Cita --> Paciente : pacienteId
+    Atencion --> Cita : citaId
+    MovimientoInventario --> Medicamento : medicamentoId
+    VentanaPrincipal *-- PanelPacientes
+    VentanaPrincipal *-- PanelCitas
+    VentanaPrincipal *-- PanelMedicamentos
+    VentanaPrincipal *-- PanelReportes
+    PanelPacientes --> ServicioSalud
+    PanelCitas --> ServicioSalud
+    PanelMedicamentos --> ServicioSalud
+    PanelReportes --> ServicioSalud
+    ConfiguracionAplicacion ..> RepositorioSaludCifrado : ruta local
